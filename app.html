@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Half Three demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--dusk:#1f3a4d;--dusk2:#2b4c63;--lamp:#f2b441;--ink:#1b2a35;--mut:#4a5b68;--page:#f5f7f8;--card:#fff;--line:#d5dde2;--ok:#1d6b45;--bad:#8a2b2b;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:1.125rem;line-height:1.55;color:var(--ink);background:var(--page)}
+.wrap{max-width:680px;margin:0 auto;padding:0 18px}
+:focus-visible{outline:3px solid var(--lamp);outline-offset:3px}
+header{background:var(--dusk);color:#fff;padding:18px 0 20px}
+header a{color:var(--lamp)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{font-weight:700;color:var(--lamp);margin:0}
+.time{font-size:2.6rem;font-weight:700;line-height:1;margin:10px 0 2px;color:var(--lamp)}
+.sample{display:inline-block;background:var(--dusk2);color:#e4edf2;border-radius:99px;padding:3px 12px;font-size:.92rem;margin:8px 0 0}
+section{padding:22px 0;border-bottom:1px solid var(--line)}
+h2{font-size:1.3rem;margin:0 0 10px}
+p{margin:0 0 10px}
+.mut{color:var(--mut);font-size:.98rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+button,select{font:inherit}
+.chip{min-height:52px;padding:10px 16px;border-radius:99px;border:2px solid var(--dusk);background:#fff;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--dusk);color:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+select{width:100%;min-height:52px;padding:10px;border:2px solid var(--mut);border-radius:10px;background:#fff;color:var(--ink)}
+label{display:block;font-weight:700;margin:0 0 4px}
+.wx{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 10px}
+.card{background:var(--card);border:2px solid var(--dusk);border-radius:14px;padding:18px}
+.card h3{font-size:1.5rem;line-height:1.2;margin:0 0 8px}
+.meta{color:var(--mut);margin:0 0 10px}
+.why{background:#eef3f6;border-radius:10px;padding:10px 12px;font-size:.98rem;margin:12px 0}
+.banner{background:#fff3c4;color:#5c4700;border-radius:10px;padding:10px 12px;margin:0 0 12px}
+.btn{min-height:56px;padding:12px 18px;border-radius:12px;border:3px solid var(--dusk);background:var(--dusk);color:#fff;font-weight:700;cursor:pointer;width:100%;margin:8px 0 0}
+.btn.alt{background:#fff;color:var(--dusk)}
+.btn.good{background:var(--ok);border-color:var(--ok)}
+.btn.small{min-height:48px;width:auto;font-size:1rem;padding:8px 14px;margin:0}
+ul.list{list-style:none;padding:0;margin:0}
+ul.list li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.good-t{color:var(--ok);font-weight:700}
+.bad-t{color:var(--bad);font-weight:700}
+footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
+</style>
+</head>
+<body>
+
+<header>
+<div class="wrap">
+<div class="top"><p class="brand">Half Three demo</p><a href="index.html">Back to the page</a></div>
+<p class="time" id="clock" aria-live="off">--:--</p>
+<p class="mut" id="date" style="color:#c7d6df;margin:0"></p>
+<span class="sample">Sample data. Nothing here is a real person.</span>
+</div>
+</header>
+
+<main class="wrap">
+
+<section>
+<h2>Her favourite things (sample)</h2>
+<p class="mut">Tap what she used to enjoy. The suggestions change to match.</p>
+<div class="chips" id="hobbies" role="group" aria-label="Former jobs and hobbies"></div>
+</section>
+
+<section>
+<h2>Right now</h2>
+<div class="wx" id="wx">Checking the weather for Galway (sample town)…</div>
+<div class="row">
+<div><label for="tsel">Time of day</label>
+<select id="tsel"><option value="now">Use my clock</option><option value="morning">Pretend: morning</option><option value="afternoon">Pretend: late afternoon</option><option value="evening">Pretend: evening</option></select></div>
+<div><label for="wsel">Weather</label>
+<select id="wsel"><option value="live">Use live weather</option><option value="dry">Pretend: dry and mild</option><option value="rain">Pretend: rain</option><option value="cold">Pretend: cold</option><option value="storm">Pretend: storm</option></select></div>
+</div>
+</section>
+
+<section aria-live="polite">
+<h2>Try this now</h2>
+<div id="banner"></div>
+<div id="suggest"></div>
+</section>
+
+<section>
+<h2>Worked before (favourites)</h2>
+<ul class="list" id="favs"></ul>
+</section>
+
+<section>
+<h2>Today’s log</h2>
+<ul class="list" id="log"></ul>
+<button class="btn alt small" id="clear" type="button" style="margin-top:6px">Clear the log</button>
+</section>
+
+</main>
+
+<footer>
+<div class="wrap">
+<p>Half Three is a fictional student project. The activities are sample ideas for routine and comfort, not medical advice. Weather comes from a free public service for a sample town. In an emergency, call 112 or 999.</p>
+</div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var KEY="half-three-demo-v1";
+var HOBBIES=[{id:"garden",label:"Gardening or farming"},{id:"cook",label:"Cooking or baking"},{id:"walk",label:"Walking"}];
+var ACTS=[
+{id:"g1",h:"garden",t:"Pot up a herb on the table",out:false,per:["morning","afternoon"],min:15,need:"A pot or mug, soil, one herb plant",how:"Fill the pot with soil together. Press the plant in and water it. Ask which herbs she grew."},
+{id:"g2",h:"garden",t:"Sort the seed packets",out:false,per:["afternoon","evening"],min:10,need:"Seed packets or a seed catalogue",how:"Lay them out and sort into flowers, vegetables and herbs. Ask what grew best."},
+{id:"g3",h:"garden",t:"Water the plants by the door",out:true,per:["morning","afternoon"],min:15,need:"A watering can, a coat",how:"Fill the can halfway so it’s light. Let her water while you walk beside her."},
+{id:"g4",h:"garden",t:"Look through gardening photos",out:false,per:["evening"],min:10,need:"A catalogue, magazine or old photos",how:"Sit together with a cup of tea. Let her point out what she remembers."},
+{id:"c1",h:"cook",t:"Make tea and buttered toast together",out:false,per:["afternoon"],min:15,need:"Bread, butter, a pot of tea",how:"Give her the buttering. Keep the kettle to yourself. Eat it together at the table."},
+{id:"c2",h:"cook",t:"Peel apples or potatoes",out:false,per:["afternoon"],min:15,need:"A bowl and a blunt peeler",how:"Sit beside her and hand her one at a time. Praise the pile, not the speed."},
+{id:"c3",h:"cook",t:"Mix a simple soda bread",out:false,per:["morning"],min:30,need:"Flour, buttermilk, bread soda, salt",how:"She mixes and shapes. You handle the oven. Smell it baking together."},
+{id:"c4",h:"cook",t:"Talk through a family recipe",out:false,per:["evening"],min:10,need:"A recipe book or just a chat",how:"Ask how she made her best dish. Write down one step as she says it."},
+{id:"w1",h:"walk",t:"A short walk round the garden or street",out:true,per:["morning","afternoon"],min:15,need:"A coat and comfortable shoes",how:"Go at her pace. Point out one seasonal thing, like leaves or birds."},
+{id:"w2",h:"walk",t:"Sit by the window and name what passes",out:false,per:["morning","afternoon","evening"],min:10,need:"Two chairs by a window",how:"Take turns naming what you see. Ask what she would have done on a day like this."},
+{id:"w3",h:"walk",t:"Walk to the post box or shop",out:true,per:["morning"],min:20,need:"A coat, a small errand",how:"Give her something small to post or carry. Stop to rest on the way back."},
+{id:"w4",h:"walk",t:"Walk the hall with music on",out:false,per:["afternoon","evening"],min:10,need:"A radio or phone, a clear hallway",how:"Play a song she knows and walk slowly together, with a hand on the rail."}
+];
+var st={hobbies:["garden"],favs:[],log:[]};
+var live=null,idx=0;
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.hobbies&&o.favs&&o.log)st=o;}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+function $(id){return document.getElementById(id);}
+function today(){return new Date().toISOString().slice(0,10);}
+function nowHour(){return new Date().getHours();}
+function period(){var v=$("tsel").value;if(v!=="now")return v;var h=nowHour();return h<12?"morning":(h<18?"afternoon":"evening");}
+function pLabel(p){return p==="morning"?"morning":(p==="afternoon"?"late afternoon":"evening");}
+function weatherCode(c){
+if(c===0)return "clear";if(c<=3)return "cloudy";if(c===45||c===48)return "foggy";
+if(c>=51&&c<=67)return "rain";if(c>=71&&c<=77)return "snow";if(c>=80&&c<=86)return "showers";if(c>=95)return "thunderstorm";return "unsettled";}
+function currentWx(){
+var v=$("wsel").value;
+if(v==="dry")return {temp:14,wind:10,wet:false,storm:false,text:"Pretend: dry and mild, 14°C"};
+if(v==="rain")return {temp:10,wind:15,wet:true,storm:false,text:"Pretend: rain, 10°C"};
+if(v==="cold")return {temp:2,wind:12,wet:false,storm:false,text:"Pretend: cold and dry, 2°C"};
+if(v==="storm")return {temp:9,wind:70,wet:true,storm:true,text:"Pretend: storm, strong wind"};
+if(live)return live;
+return {temp:12,wind:10,wet:false,storm:false,text:"Live weather not available, so assuming dry and mild"};}
+function outdoorOK(w){return !w.wet&&!w.storm&&w.wind<40&&w.temp>=5;}
+function candidates(){
+var p=period(),w=currentWx(),ok=outdoorOK(w),d=today();
+var skipped={};st.log.forEach(function(e){if(e.date===d&&e.result==="no")skipped[e.id]=1;});
+return ACTS.filter(function(a){
+return st.hobbies.indexOf(a.h)>-1&&a.per.indexOf(p)>-1&&(!a.out||ok)&&!skipped[a.id];
+}).sort(function(a,b){var fa=st.favs.indexOf(a.id)>-1?0:1,fb=st.favs.indexOf(b.id)>-1?0:1;return fa-fb;});}
+function byId(id){for(var i=0;i<ACTS.length;i++)if(ACTS[i].id===id)return ACTS[i];return null;}
+function hLabel(h){for(var i=0;i<HOBBIES.length;i++)if(HOBBIES[i].id===h)return HOBBIES[i].label.toLowerCase();return h;}
+function renderHobbies(){
+var box=$("hobbies");box.innerHTML="";
+HOBBIES.forEach(function(h){
+var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=h.label;
+var on=st.hobbies.indexOf(h.id)>-1;b.setAttribute("aria-pressed",on?"true":"false");
+b.addEventListener("click",function(){var i=st.hobbies.indexOf(h.id);if(i>-1)st.hobbies.splice(i,1);else st.hobbies.push(h.id);idx=0;save();renderAll();});
+box.appendChild(b);});}
+function renderSuggest(){
+var c=candidates(),p=period(),w=currentWx(),box=$("suggest"),ban=$("banner");
+ban.innerHTML="";box.innerHTML="";
+if(p==="afternoon"){var d=document.createElement("div");d.className="banner";d.textContent="Late afternoon can be the restless hour. Start something calm and familiar now.";ban.appendChild(d);}
+if(!st.hobbies.length){box.innerHTML='<p class="mut">Tap at least one favourite thing above.</p>';return;}
+if(!c.length){box.innerHTML='<p>No ideas left for this time, weather and set of favourites. Add another favourite above, or change the time or weather.</p>';return;}
+if(idx>=c.length)idx=0;
+var a=c[idx];
+var why="It’s "+pLabel(p)+". "+(outdoorOK(w)?"It’s dry enough to go outside. ":"It’s too wet, cold or windy for outside, so this is indoors. ")+"She used to enjoy "+hLabel(a.h)+".";
+var isFav=st.favs.indexOf(a.id)>-1;
+var card=document.createElement("div");card.className="card";
+card.innerHTML="<h3></h3><p class='meta'></p><p><strong>You’ll need:</strong> <span class='need'></span></p><p class='how'></p><div class='why'></div>";
+card.querySelector("h3").textContent=a.t;
+card.querySelector(".meta").textContent=a.min+" minutes · "+(a.out?"outside":"inside")+(isFav?" · a favourite":"");
+card.querySelector(".need").textContent=a.need;
+card.querySelector(".how").textContent=a.how;
+card.querySelector(".why").textContent="Why this: "+why;
+box.appendChild(card);
+function mk(txt,cls,fn){var b=document.createElement("button");b.type="button";b.className="btn "+cls;b.textContent=txt;b.addEventListener("click",fn);box.appendChild(b);}
+mk("She enjoyed it","good",function(){addLog(a,"yes");});
+mk("Not today","alt",function(){addLog(a,"no");});
+mk("Another idea","alt",function(){idx=(idx+1)%c.length;renderSuggest();});
+mk(isFav?"Remove from favourites":"Save as a favourite","alt",function(){toggleFav(a.id);});
+$("wx").textContent=w.text;}
+function addLog(a,res){
+st.log.unshift({id:a.id,title:a.t,result:res,date:today(),time:new Date().toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit"})});
+if(res==="yes"&&st.favs.indexOf(a.id)<0)st.favs.push(a.id);
+idx=0;save();renderAll();}
+function toggleFav(id){var i=st.favs.indexOf(id);if(i>-1)st.favs.splice(i,1);else st.favs.push(id);save();renderAll();}
+function renderFavs(){
+var ul=$("favs");ul.innerHTML="";
+if(!st.favs.length){ul.innerHTML='<li><span class="mut">None yet. Tap “She enjoyed it” and it appears here.</span></li>';return;}
+st.favs.forEach(function(id){var a=byId(id);if(!a)return;
+var li=document.createElement("li");var s=document.createElement("span");s.textContent=a.t;li.appendChild(s);
+var b=document.createElement("button");b.type="button";b.className="btn alt small";b.textContent="Remove";
+b.addEventListener("click",function(){toggleFav(id);});li.appendChild(b);ul.appendChild(li);});}
+function renderLog(){
+var ul=$("log");ul.innerHTML="";var d=today();
+var items=st.log.filter(function(e){return e.date===d;});
+if(!items.length){ul.innerHTML='<li><span class="mut">Nothing logged today.</span></li>';return;}
+items.forEach(function(e){var li=document.createElement("li");
+var s=document.createElement("span");s.textContent=e.time+" · "+e.title;
+var r=document.createElement("span");r.className=e.result==="yes"?"good-t":"bad-t";r.textContent=e.result==="yes"?"Enjoyed":"Not today";
+li.appendChild(s);li.appendChild(r);ul.appendChild(li);});}
+function renderAll(){renderHobbies();renderSuggest();renderFavs();renderLog();}
+function tick(){var n=new Date();
+$("clock").textContent=n.toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit"});
+$("date").textContent=n.toLocaleDateString("en-IE",{weekday:"long",day:"numeric",month:"long"});}
+function fetchWx(){
+var url="https://api.open-meteo.com/v1/forecast?latitude=53.27&longitude=-9.05&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=Europe%2FDublin";
+fetch(url).then(function(r){return r.json();}).then(function(j){
+var c=j.current;var kind=weatherCode(c.weather_code);
+live={temp:Math.round(c.temperature_2m),wind:Math.round(c.wind_speed_10m),
+wet:c.precipitation>0.1||kind==="rain"||kind==="showers"||kind==="thunderstorm"||kind==="snow",
+storm:kind==="thunderstorm"||c.wind_speed_10m>=60,
+text:"Live weather, Galway (sample town): "+kind+", "+Math.round(c.temperature_2m)+"°C, wind "+Math.round(c.wind_speed_10m)+" km/h"};
+renderSuggest();
+}).catch(function(){live=null;$("wx").textContent="Live weather unavailable. Choose a pretend weather below to test the rules.";renderSuggest();});}
+$("tsel").addEventListener("change",function(){idx=0;renderSuggest();});
+$("wsel").addEventListener("change",function(){idx=0;renderSuggest();});
+$("clear").addEventListener("click",function(){st.log=[];save();renderAll();});
+load();tick();setInterval(tick,30000);renderAll();fetchWx();
+})();
+</script>
+</body>
+</html>
