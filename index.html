@@ -38,8 +38,8 @@ ol.steps li{counter-increment:s;background:var(--card);border:1px solid var(--li
 ol.steps li::before{content:counter(s);position:absolute;left:16px;top:14px;width:36px;height:36px;border-radius:50%;background:var(--dusk);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
 ol.steps strong{display:block}
 .scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:1rem;min-width:420px}
-th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table{border-collapse:collapse;width:100%;font-size:1rem;min-width:680px}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}\nth{background:#eaf0f3}
 .price{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
 .price .amt{font-size:2.4rem;font-weight:700;line-height:1.1}
 .price .amt span{font-size:1.1rem;font-weight:400;color:var(--mut)}
@@ -49,6 +49,9 @@ form .btn{width:100%;background:var(--dusk);border-color:var(--dusk);color:#fff}
 #thanks{background:#e3f3ea;border:2px solid var(--ok);border-radius:12px;padding:18px;color:#0f3d27}
 .todo{background:var(--todo);color:var(--todo-ink);border:2px dashed #c9a400;border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:1rem}
 footer{padding:32px 0 48px;color:var(--mut);font-size:1rem}
+
+@media (max-width:520px){.wrap{padding-left:16px;padding-right:16px}section{padding:32px 0}.btns .btn{flex-basis:100%}}
+@media print{header.hero{background:#fff;color:var(--ink)}.lead{color:var(--ink)}.btn{border:1px solid var(--ink)}}
 </style>
 </head>
 <body>
@@ -60,7 +63,7 @@ footer{padding:32px 0 48px;color:var(--mut);font-size:1rem}
 <p class="tag">Fictional project with sample data</p>
 <p class="clock" aria-hidden="true">3:30<small>when the afternoon turns restless</small></p>
 <h1>A no-prep activity for the restless afternoon, in under a minute.</h1>
-<p class="lead">Teatime Ideas is a phone app for older spouses caring at home for a husband or wife with dementia. It checks the time and the weather, and suggests something to start right now.</p>
+<p class="lead">Teatime Ideas is a phone app concept for husbands and wives caring at home for a spouse with moderate dementia. It checks the time and local sample weather, then suggests a familiar activity they can start together.</p>
 <div class="btns">
 <a class="btn primary" href="#join">Join the waiting list</a>
 <a class="btn secondary" href="app.html">Try the demo</a>
@@ -87,26 +90,28 @@ footer{padding:32px 0 48px;color:var(--mut);font-size:1rem}
 <section id="how">
 <h2>How it works</h2>
 <ol class="steps">
-<li><strong>Tell it about them, once.</strong>Pick what they used to do for work or as a hobby, such as gardening, knitting or football.</li>
-<li><strong>Open it in the afternoon.</strong>It checks the time and the weather, and picks an activity that suits.</li>
-<li><strong>Start it, or swap it.</strong>Each idea lists what you need, and baking and gardening ideas come with the steps. Don’t like it? Tap once for another.</li>
+<li><strong>Tell it about them, once.</strong> Pick what they used to do for work or as a hobby, such as gardening, knitting or football.</li>
+<li><strong>Open it in the afternoon.</strong> It checks the time and the weather, and picks an activity that suits.</li>
+<li><strong>Start it, or swap it.</strong> Each idea lists what you need. Baking and gardening ideas include numbered steps. Don’t like it? Tap once for another.</li>
 </ol>
 <p><a class="btn primary" href="app.html">Try the demo</a></p>
-<p class="cite">The demo is a prototype. It uses made-up sample data and sample weather.</p>
+<p class="cite">The demo is a prototype with made-up sample user data. Weather is live for Galway, Ireland, used as a sample location rather than your location. You can also switch to pretend weather conditions to test the rules.</p>
 </section>
 
 <section id="fit">
 <h2>What it must do, and where it stands</h2>
 <div class="scroll"><table>
-<thead><tr><th>Requirement</th><th>Status</th></tr></thead>
+<thead><tr><th>Checkable user requirement</th><th>How Teatime Ideas meets it</th><th>Status</th></tr></thead>
 <tbody>
-<tr><td>Large text, one-handed, no login</td><td>In the demo</td></tr>
-<tr><td>Suggests an activity in under a minute</td><td>In the demo</td></tr>
-<tr><td>Adapts to the time, the weather and their former job or hobby</td><td>In the demo (live weather for a sample Irish town)</td></tr>
-<tr><td>Lists what you need, using ordinary things from the house</td><td>In the demo</td></tr>
-<tr><td>Free for the carer</td><td>Planned</td></tr>
+<tr><td>Readable on a phone and usable with one hand, without creating an account</td><td>Large text, high-contrast colours, large tap targets and no sign-in screen.</td><td>In demo</td></tr>
+<tr><td>Give the carer an activity idea in under a minute</td><td>The user selects familiar interests and receives a suggestion immediately; they can swap it for another.</td><td>In demo</td></tr>
+<tr><td>Suggest activities that fit the person’s interests and the time of day</td><td>Eight interest categories are available. The suggestion list filters activities for morning, late afternoon or evening.</td><td>In demo</td></tr>
+<tr><td>Avoid suggesting outdoor activities when the weather is unsuitable</td><td>Weather rules filter outdoor ideas in rain, storms, strong wind or cold conditions. The demo also has pretend-weather controls.</td><td>In demo</td></tr>
+<tr><td>Explain what is needed and how to begin</td><td>Each suggestion lists the items needed and a short explanation; baking and gardening activities include numbered steps.</td><td>In demo</td></tr>
+<tr><td>Be free for the spouse-carer to use</td><td>The proposed model is free to the carer, with an assumed €4 monthly household payment from a family member or funder.</td><td>Planned</td></tr>
 </tbody>
 </table></div>
+<p class="cite">The requirements are design targets for this student project. “In demo” means the feature is present in this prototype; it does not mean a finished product has been independently certified.</p>
 </section>
 
 <section id="price">
@@ -119,7 +124,7 @@ footer{padding:32px 0 48px;color:var(--mut);font-size:1rem}
 
 <section id="real">
 <h2>What exists today</h2>
-<p>Two real tools that already do part of this. Both were checked on 28 Oct 2026.</p>
+<p>Two real alternatives that address parts of the wider need. The pages were checked on 28 October 2026; availability, features and prices may change.</p>
 <ul>
 <li><a href="https://www.mindmate-app.com">MindMate</a>. It offers brain games, a daily activity plan, exercise and recipes, aimed at people keeping their own minds active. Its homepage does not mention suggesting an activity for a carer to start with their partner, based on the time, the weather and their past hobbies.</li>
 <li><a href="https://www.carersuk.org/jointly/">Jointly</a>, from Carers UK. It helps a circle of carers share messages, tasks and medication lists, and costs a one-off £2.99 per circle. Its page describes coordinating care, not suggesting something to do together during a restless afternoon.</li>
@@ -128,14 +133,25 @@ footer{padding:32px 0 48px;color:var(--mut);font-size:1rem}
 
 <section id="tested">
 <h2>What testing showed</h2>
-<p>A family member who is a spouse-carer looked through the page and tried the demo.</p>
-<p>What they told me: three things were missing. There were only three favourite-thing categories. The page only mentioned husbands, though wives care for their husbands too. And the baking and gardening ideas had no steps.</p>
-<p>What I changed: the page now speaks to husbands and wives. The demo now has eight favourite-thing categories with four ideas each, and every baking and gardening idea has numbered steps.</p>
+<p>A family member who is a spouse-carer reviewed the landing page and tried the demo. This was informal feedback, not a formal user study.</p>
+<h3>Feedback received</h3>
+<ul>
+<li>The first version offered only three favourite-thing categories.</li>
+<li>The wording focused on husbands and did not clearly include wives who care for their husbands.</li>
+<li>The baking and gardening suggestions did not explain the steps to take.</li>
+</ul>
+<h3>Changes made after the feedback</h3>
+<ul>
+<li>The page now refers to husbands and wives.</li>
+<li>The demo now includes eight interest categories and 32 sample activity ideas.</li>
+<li>Baking and gardening activities now include numbered instructions.</li>
+</ul>
+<p class="cite">Testing limitation: this is one informal tester. Before submission, record the exact task the tester completed, confirm that they were not involved in building the prototype, and note any further confusion or problems they encountered. Only include details that actually happened.</p>
 </section>
 
 <section id="join">
 <h2>Join the waiting list</h2>
-<p>The demo is a working prototype, and the full app is not built yet. Tell us who you are, and we’ll know who it’s for.</p>
+<p>The demo is a working prototype, and the full app is not built yet. This form is only a demonstration of the intended waiting-list journey.</p>
 <div id="formbox">
 <form id="wl">
 <label for="who">I am</label>
@@ -158,7 +174,7 @@ footer{padding:32px 0 48px;color:var(--mut);font-size:1rem}
 
 <footer>
 <div class="wrap">
-<p>Teatime Ideas is a fictional student project. The name, price and quote are invented. Activities are suggestions for routine and comfort. They are not medical advice. In an emergency, call 112 or 999.</p>
+<p>Teatime Ideas is a fictional student project. The product concept, price and example quotes are invented. Activities are sample suggestions for routine and shared enjoyment, not medical advice or a dementia-care plan. A carer should use their judgement and adapt or stop an activity if it causes discomfort. In an emergency, call 112 or 999.</p>
 <p>No customers, ratings or testimonials are claimed on this page.</p>
 </div>
 </footer>

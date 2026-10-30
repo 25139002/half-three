@@ -47,6 +47,8 @@ ul.list li{background:var(--card);border:1px solid var(--line);border-radius:10p
 .good-t{color:var(--ok);font-weight:700}
 .bad-t{color:var(--bad);font-weight:700}
 footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
+
+@media(max-width:520px){.row{grid-template-columns:1fr}.wrap{padding-left:16px;padding-right:16px}}
 </style>
 </head>
 <body>
@@ -56,7 +58,7 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 <div class="top"><p class="brand">Teatime Ideas demo</p><a href="index.html">Back to the page</a></div>
 <p class="time" id="clock">--:--</p>
 <p class="mut" id="date" style="color:#c7d6df;margin:0"></p>
-<span class="sample">Sample data. Nothing here is a real person.</span>
+<span class="sample">Sample data · no real person or care record</span>
 </div>
 </header>
 
@@ -70,7 +72,8 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 
 <section>
 <h2>Right now</h2>
-<div class="wx" id="wx">Checking the weather for Galway (sample town)…</div>
+<div class="wx" id="wx">Checking live weather for Galway, Ireland (sample location)…</div>
+<p class="mut">Galway is used as a fixed example location. This demo does not use your device location. You can choose pretend weather below to test how the suggestions change.</p>
 <div class="row">
 <div><label for="tsel">Time of day</label>
 <select id="tsel"><option value="now">Use my clock</option><option value="morning">Pretend: morning</option><option value="afternoon">Pretend: late afternoon</option><option value="evening">Pretend: evening</option></select></div>
@@ -82,11 +85,12 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 <section aria-live="polite">
 <h2>Try this now</h2>
 <div id="banner"></div>
-<div id="suggest"></div>
+<div id="suggest" aria-live="polite"></div>
 </section>
 
 <section>
 <h2>Worked before (favourites)</h2>
+<p class="mut">Your choices and activity log are saved in this browser on this device, using local storage. Refresh the page to check that they remain.</p>
 <ul class="list" id="favs"></ul>
 </section>
 
@@ -100,7 +104,7 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 
 <footer>
 <div class="wrap">
-<p>Teatime Ideas is a fictional student project. The activities and recipes are sample ideas for routine and comfort, not medical advice. Check for allergies before cooking, and keep the oven and sharp tools for the carer. Weather comes from a free public service for a sample town. In an emergency, call 112 or 999.</p>
+<p>Teatime Ideas is a fictional student project. The 32 activities are sample ideas, not medical advice or a dementia-care plan. Adapt or stop an activity if it causes discomfort. Check allergies before cooking; the carer should handle ovens, hot items and sharp tools. Live weather is requested from Open-Meteo for Galway, Ireland, as a fixed sample location; it is not based on your location. In an emergency, call 112 or 999.</p>
 </div>
 </footer>
 
@@ -172,7 +176,7 @@ if(v==="rain")return {temp:10,wind:15,wet:true,storm:false,text:"Pretend: rain, 
 if(v==="cold")return {temp:2,wind:12,wet:false,storm:false,text:"Pretend: cold and dry, 2°C"};
 if(v==="storm")return {temp:9,wind:70,wet:true,storm:true,text:"Pretend: storm, strong wind"};
 if(live)return live;
-return {temp:12,wind:10,wet:false,storm:false,text:"Live weather not available, so assuming dry and mild"};}
+return {temp:12,wind:10,wet:true,storm:false,text:"Live weather unavailable. Outdoor ideas are paused; choose a pretend weather condition to test the demo."};}
 function outdoorOK(w){return !w.wet&&!w.storm&&w.wind<40&&w.temp>=5;}
 function candidates(){
 var p=period(),w=currentWx(),ok=outdoorOK(w),d=today(),skipped={};
@@ -204,7 +208,7 @@ var n=document.createElement("p");var nb=document.createElement("strong");nb.tex
 var how=document.createElement("p");how.textContent=a.how;card.appendChild(how);
 if(a.steps){var ol=document.createElement("ol");a.steps.forEach(function(s){var li=document.createElement("li");li.textContent=s;ol.appendChild(li);});card.appendChild(ol);}
 var why=document.createElement("div");why.className="why";
-why.textContent="Why this: It’s "+pLabel(p)+". "+(outdoorOK(w)?"It’s dry enough to go outside. ":"It’s too wet, cold or windy for outside, so this is indoors. ")+"They used to enjoy "+cLabel(a.h)+".";
+why.textContent="Why this: It’s "+pLabel(p)+". "+(outdoorOK(w)?"The sample weather allows outdoor ideas. ":"Outdoor ideas are paused because the sample weather is unsuitable or unavailable. ")+"They used to enjoy "+cLabel(a.h)+".";
 card.appendChild(why);box.appendChild(card);
 function mk(txt,cls,fn){var b=document.createElement("button");b.type="button";b.className="btn "+cls;b.textContent=txt;b.addEventListener("click",fn);box.appendChild(b);}
 mk("They enjoyed it","good",function(){addLog(a,"yes");});
