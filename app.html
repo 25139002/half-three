@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Half Three demo</title>
+<title>Teatime Ideas demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -33,6 +33,8 @@ label{display:block;font-weight:700;margin:0 0 4px}
 .wx{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 10px}
 .card{background:var(--card);border:2px solid var(--dusk);border-radius:14px;padding:18px}
 .card h3{font-size:1.5rem;line-height:1.2;margin:0 0 8px}
+.card ol{padding-left:24px;margin:8px 0 10px}
+.card li{margin:0 0 6px}
 .meta{color:var(--mut);margin:0 0 10px}
 .why{background:#eef3f6;border-radius:10px;padding:10px 12px;font-size:.98rem;margin:12px 0}
 .banner{background:#fff3c4;color:#5c4700;border-radius:10px;padding:10px 12px;margin:0 0 12px}
@@ -51,8 +53,8 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 
 <header>
 <div class="wrap">
-<div class="top"><p class="brand">Half Three demo</p><a href="index.html">Back to the page</a></div>
-<p class="time" id="clock" aria-live="off">--:--</p>
+<div class="top"><p class="brand">Teatime Ideas demo</p><a href="index.html">Back to the page</a></div>
+<p class="time" id="clock">--:--</p>
 <p class="mut" id="date" style="color:#c7d6df;margin:0"></p>
 <span class="sample">Sample data. Nothing here is a real person.</span>
 </div>
@@ -61,8 +63,8 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 <main class="wrap">
 
 <section>
-<h2>Her favourite things (sample)</h2>
-<p class="mut">Tap what she used to enjoy. The suggestions change to match.</p>
+<h2>Their favourite things (sample)</h2>
+<p class="mut">Tap what they used to enjoy. Pick as many as you like. The suggestions change to match.</p>
 <div class="chips" id="hobbies" role="group" aria-label="Former jobs and hobbies"></div>
 </section>
 
@@ -98,39 +100,69 @@ footer{padding:20px 0 40px;color:var(--mut);font-size:.98rem}
 
 <footer>
 <div class="wrap">
-<p>Half Three is a fictional student project. The activities are sample ideas for routine and comfort, not medical advice. Weather comes from a free public service for a sample town. In an emergency, call 112 or 999.</p>
+<p>Teatime Ideas is a fictional student project. The activities and recipes are sample ideas for routine and comfort, not medical advice. Check for allergies before cooking, and keep the oven and sharp tools for the carer. Weather comes from a free public service for a sample town. In an emergency, call 112 or 999.</p>
 </div>
 </footer>
 
 <script>
 (function(){
 "use strict";
-var KEY="half-three-demo-v1";
-var HOBBIES=[{id:"garden",label:"Gardening or farming"},{id:"cook",label:"Cooking or baking"},{id:"walk",label:"Walking"}];
+var KEY="half-three-demo-v2";
+var CATS=[
+{id:"garden",label:"Gardening or farming"},
+{id:"cook",label:"Cooking or baking"},
+{id:"walk",label:"Walking"},
+{id:"music",label:"Music or dancing"},
+{id:"sport",label:"Sport, such as GAA or football"},
+{id:"craft",label:"Knitting, sewing or crafts"},
+{id:"games",label:"Cards and games"},
+{id:"pets",label:"Pets and wildlife"}
+];
+/* per: m = morning, a = late afternoon, e = evening */
+function A(id,h,t,out,per,min,need,how,steps){return {id:id,h:h,t:t,out:out,per:per,min:min,need:need,how:how,steps:steps||null};}
 var ACTS=[
-{id:"g1",h:"garden",t:"Pot up a herb on the table",out:false,per:["morning","afternoon"],min:15,need:"A pot or mug, soil, one herb plant",how:"Fill the pot with soil together. Press the plant in and water it. Ask which herbs she grew."},
-{id:"g2",h:"garden",t:"Sort the seed packets",out:false,per:["afternoon","evening"],min:10,need:"Seed packets or a seed catalogue",how:"Lay them out and sort into flowers, vegetables and herbs. Ask what grew best."},
-{id:"g3",h:"garden",t:"Water the plants by the door",out:true,per:["morning","afternoon"],min:15,need:"A watering can, a coat",how:"Fill the can halfway so it’s light. Let her water while you walk beside her."},
-{id:"g4",h:"garden",t:"Look through gardening photos",out:false,per:["evening"],min:10,need:"A catalogue, magazine or old photos",how:"Sit together with a cup of tea. Let her point out what she remembers."},
-{id:"c1",h:"cook",t:"Make tea and buttered toast together",out:false,per:["afternoon"],min:15,need:"Bread, butter, a pot of tea",how:"Give her the buttering. Keep the kettle to yourself. Eat it together at the table."},
-{id:"c2",h:"cook",t:"Peel apples or potatoes",out:false,per:["afternoon"],min:15,need:"A bowl and a blunt peeler",how:"Sit beside her and hand her one at a time. Praise the pile, not the speed."},
-{id:"c3",h:"cook",t:"Mix a simple soda bread",out:false,per:["morning"],min:30,need:"Flour, buttermilk, bread soda, salt",how:"She mixes and shapes. You handle the oven. Smell it baking together."},
-{id:"c4",h:"cook",t:"Talk through a family recipe",out:false,per:["evening"],min:10,need:"A recipe book or just a chat",how:"Ask how she made her best dish. Write down one step as she says it."},
-{id:"w1",h:"walk",t:"A short walk round the garden or street",out:true,per:["morning","afternoon"],min:15,need:"A coat and comfortable shoes",how:"Go at her pace. Point out one seasonal thing, like leaves or birds."},
-{id:"w2",h:"walk",t:"Sit by the window and name what passes",out:false,per:["morning","afternoon","evening"],min:10,need:"Two chairs by a window",how:"Take turns naming what you see. Ask what she would have done on a day like this."},
-{id:"w3",h:"walk",t:"Walk to the post box or shop",out:true,per:["morning"],min:20,need:"A coat, a small errand",how:"Give her something small to post or carry. Stop to rest on the way back."},
-{id:"w4",h:"walk",t:"Walk the hall with music on",out:false,per:["afternoon","evening"],min:10,need:"A radio or phone, a clear hallway",how:"Play a song she knows and walk slowly together, with a hand on the rail."}
+A("g1","garden","Pot up a herb on the table",false,"ma",15,"A pot or mug, soil, one herb plant","Sit at the table with newspaper under the pot.",["Fill the pot about three-quarters full of soil.","Make a hollow and set the plant in it.","Press soil gently around the stem and water it lightly.","Put it on a bright windowsill and ask which herbs they used to grow."]),
+A("g2","garden","Sort the seed packets",false,"ae",10,"Seed packets or a seed catalogue","Spread them on the table where there is good light.",["Tip the packets onto the table.","Make three piles: flowers, vegetables and herbs.","Ask which grew best, and where in the garden.","Put the packets back in a box, sorted into their piles."]),
+A("g3","garden","Water the plants by the door",true,"ma",15,"A watering can, a coat","Choose plants close to the door so it is not far to walk.",["Fill the can only halfway so it is light.","Walk to the plants together, at their pace.","Let them water while you steady the can if needed.","Come back in and have a warm drink."]),
+A("g4","garden","Grow cress on a plate",false,"mae",10,"Kitchen paper, a plate, cress seeds, water","A quick, cheap project that gives them something to check each day.",["Wet two sheets of kitchen paper and lay them on a plate.","Sprinkle the cress seeds over the paper.","Put the plate on a windowsill.","Check it each day and keep the paper damp. It is ready to eat in about a week."]),
+A("c1","cook","Make tea and buttered toast",false,"mae",15,"Bread, butter, tea","A simple job they can do beside you.",["Put the bread in the toaster, or under the grill with you watching.","Set out two plates and the butter.","Let them butter the toast.","Pour the tea and sit down together."]),
+A("c2","cook","Peel apples or potatoes",false,"ae",15,"A bowl and a blunt peeler","Sit beside them, and hand them one at a time.",["Wash the apples or potatoes and set out a bowl.","Hand one over and show them how you hold the peeler.","Let them peel at their own speed.","Cook or share what they peeled afterwards."]),
+A("c3","cook","Mix a simple soda bread",false,"m",40,"450g plain flour, 1 tsp bread soda, 1 tsp salt, about 400ml buttermilk (sample recipe)","They mix and shape. You handle the oven.",["Heat the oven to 200°C (180°C fan) and flour a baking tray.","Mix the flour, bread soda and salt in a large bowl.","Pour in most of the buttermilk and mix to a soft dough. Add more only if it is dry.","Shape into a round, put it on the tray and cut a deep cross on top.","You put it in the oven. Bake about 30 minutes, until it sounds hollow when tapped underneath."]),
+A("c4","cook","Bake fruit scones",false,"ma",35,"225g self-raising flour, 50g butter, 25g sugar, a handful of sultanas, about 150ml milk (sample recipe)","Good for hands that like to rub, stir and pat.",["Heat the oven to 220°C (200°C fan) and flour a tray.","Rub the butter into the flour with fingertips until it looks like crumbs.","Stir in the sugar and sultanas, then add the milk to make a soft dough.","Pat the dough out about 2cm thick and cut rounds with a glass.","You put the tray in the oven. Bake 10 to 12 minutes, until golden."]),
+A("w1","walk","A short walk round the garden or street",true,"ma",15,"A coat and comfortable shoes","Go at their pace and point out one seasonal thing, like leaves or birds."),
+A("w2","walk","Sit by the window and name what passes",false,"mae",10,"Two chairs by a window","Take turns naming what you see. Ask what they would have done on a day like this."),
+A("w3","walk","Walk to the post box or shop",true,"m",20,"A coat and a small errand","Give them something small to post or carry. Stop to rest on the way back."),
+A("w4","walk","Walk the hall with music on",false,"ae",10,"A radio or phone, a clear hallway","Play a song they know and walk slowly together, with a hand on the rail."),
+A("m1","music","Sing a favourite song together",false,"mae",10,"Nothing, or a radio for the first line","Start the song yourself and let them join. Words matter less than the tune."),
+A("m2","music","Play music from their young days",false,"ae",15,"A radio, phone or CD player","Ask them to name the singer, the dance hall, or who they danced with."),
+A("m3","music","Gentle seated dancing",false,"a",10,"Two chairs, music","Sit facing each other and clap, sway or tap your feet along."),
+A("m4","music","Tap a rhythm with wooden spoons",false,"ma",10,"Two wooden spoons and a tin or tray","Tap a simple beat and let them copy it, then swap who leads."),
+A("s1","sport","Watch an old match or highlights",false,"ae",20,"A TV or tablet","Pick a match from years ago. Ask who the best player was."),
+A("s2","sport","Go through the sports pages",false,"m",10,"A newspaper","Read out a headline and ask what they think of the team this year."),
+A("s3","sport","Pass a soft ball back and forth",false,"ma",10,"A soft ball, two chairs","Sit facing each other and roll or toss it gently between you."),
+A("s4","sport","Watch local training from the car or sideline",true,"a",20,"A coat, a flask of tea","Park near the pitch and watch together. Stay in the car if it is chilly."),
+A("k1","craft","Wind wool into a ball",false,"mae",15,"A skein of wool","Hold the skein on your hands and let them wind it."),
+A("k2","craft","Sort buttons by colour or size",false,"mae",10,"A tin of buttons and a tray","Ask if any buttons come from a coat they remember."),
+A("k3","craft","Knit or crochet a simple square",false,"ma",20,"Needles or a hook and some wool","Let them pick up where they left off. Ignore any dropped stitches."),
+A("k4","craft","Fold and sort tea towels",false,"ae",10,"A pile of clean tea towels","Fold them together and stack them in a neat pile."),
+A("p1","games","Play snap or a simple card game",false,"ae",15,"A deck of cards","Keep the rules simple. Winning is not the point."),
+A("p2","games","Do a simple jigsaw",false,"mae",20,"A jigsaw with 24 to 60 large pieces","Start with the edge pieces and the corners."),
+A("p3","games","Play dominoes",false,"ae",15,"A set of dominoes","Match numbers and talk as you go."),
+A("p4","games","Sort a deck of cards by suit",false,"ma",10,"A deck of cards","Lay out four rows and let them sort the cards into them."),
+A("a1","pets","Fill the bird feeder",true,"ma",10,"Bird seed, a coat","Fill it together and watch for the first visitor."),
+A("a2","pets","Brush the dog or cat",false,"mae",10,"A soft brush and a calm pet","Let them brush slowly and talk to the animal."),
+A("a3","pets","Watch the birds from the window",false,"ma",10,"A chair by a window, a bird book if you have one","Count how many birds you see and name any you know."),
+A("a4","pets","Look through animal photos or a nature programme",false,"ae",15,"A photo album, tablet or TV","Ask which animals they kept or looked after.")
 ];
 var st={hobbies:["garden"],favs:[],log:[]};
 var live=null,idx=0;
-function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.hobbies&&o.favs&&o.log)st=o;}}catch(e){}}
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&Array.isArray(o.hobbies)&&Array.isArray(o.favs)&&Array.isArray(o.log))st=o;}}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
 function $(id){return document.getElementById(id);}
-function today(){return new Date().toISOString().slice(0,10);}
-function nowHour(){return new Date().getHours();}
-function period(){var v=$("tsel").value;if(v!=="now")return v;var h=nowHour();return h<12?"morning":(h<18?"afternoon":"evening");}
-function pLabel(p){return p==="morning"?"morning":(p==="afternoon"?"late afternoon":"evening");}
-function weatherCode(c){
+function today(){var n=new Date();return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2);}
+function period(){var v=$("tsel").value;if(v!=="now")return v;var h=new Date().getHours();return h<12?"morning":(h<18?"afternoon":"evening");}
+function pLabel(p){return p==="afternoon"?"late afternoon":p;}
+function kindOf(c){
 if(c===0)return "clear";if(c<=3)return "cloudy";if(c===45||c===48)return "foggy";
 if(c>=51&&c<=67)return "rain";if(c>=71&&c<=77)return "snow";if(c>=80&&c<=86)return "showers";if(c>=95)return "thunderstorm";return "unsettled";}
 function currentWx(){
@@ -143,44 +175,42 @@ if(live)return live;
 return {temp:12,wind:10,wet:false,storm:false,text:"Live weather not available, so assuming dry and mild"};}
 function outdoorOK(w){return !w.wet&&!w.storm&&w.wind<40&&w.temp>=5;}
 function candidates(){
-var p=period(),w=currentWx(),ok=outdoorOK(w),d=today();
-var skipped={};st.log.forEach(function(e){if(e.date===d&&e.result==="no")skipped[e.id]=1;});
+var p=period(),w=currentWx(),ok=outdoorOK(w),d=today(),skipped={};
+st.log.forEach(function(e){if(e.date===d&&e.result==="no")skipped[e.id]=1;});
 return ACTS.filter(function(a){
-return st.hobbies.indexOf(a.h)>-1&&a.per.indexOf(p)>-1&&(!a.out||ok)&&!skipped[a.id];
-}).sort(function(a,b){var fa=st.favs.indexOf(a.id)>-1?0:1,fb=st.favs.indexOf(b.id)>-1?0:1;return fa-fb;});}
+return st.hobbies.indexOf(a.h)>-1&&a.per.indexOf(p.charAt(0))>-1&&(!a.out||ok)&&!skipped[a.id];
+}).sort(function(a,b){return (st.favs.indexOf(a.id)>-1?0:1)-(st.favs.indexOf(b.id)>-1?0:1);});}
 function byId(id){for(var i=0;i<ACTS.length;i++)if(ACTS[i].id===id)return ACTS[i];return null;}
-function hLabel(h){for(var i=0;i<HOBBIES.length;i++)if(HOBBIES[i].id===h)return HOBBIES[i].label.toLowerCase();return h;}
+function cLabel(h){for(var i=0;i<CATS.length;i++)if(CATS[i].id===h)return CATS[i].label.toLowerCase();return h;}
 function renderHobbies(){
 var box=$("hobbies");box.innerHTML="";
-HOBBIES.forEach(function(h){
+CATS.forEach(function(h){
 var b=document.createElement("button");b.type="button";b.className="chip";b.textContent=h.label;
-var on=st.hobbies.indexOf(h.id)>-1;b.setAttribute("aria-pressed",on?"true":"false");
+b.setAttribute("aria-pressed",st.hobbies.indexOf(h.id)>-1?"true":"false");
 b.addEventListener("click",function(){var i=st.hobbies.indexOf(h.id);if(i>-1)st.hobbies.splice(i,1);else st.hobbies.push(h.id);idx=0;save();renderAll();});
 box.appendChild(b);});}
 function renderSuggest(){
 var c=candidates(),p=period(),w=currentWx(),box=$("suggest"),ban=$("banner");
-ban.innerHTML="";box.innerHTML="";
+ban.innerHTML="";box.innerHTML="";$("wx").textContent=w.text;
 if(p==="afternoon"){var d=document.createElement("div");d.className="banner";d.textContent="Late afternoon can be the restless hour. Start something calm and familiar now.";ban.appendChild(d);}
 if(!st.hobbies.length){box.innerHTML='<p class="mut">Tap at least one favourite thing above.</p>';return;}
-if(!c.length){box.innerHTML='<p>No ideas left for this time, weather and set of favourites. Add another favourite above, or change the time or weather.</p>';return;}
+if(!c.length){box.innerHTML="<p>No ideas left for this time, weather and set of favourites. Add another favourite above, or change the time or weather.</p>";return;}
 if(idx>=c.length)idx=0;
-var a=c[idx];
-var why="It’s "+pLabel(p)+". "+(outdoorOK(w)?"It’s dry enough to go outside. ":"It’s too wet, cold or windy for outside, so this is indoors. ")+"She used to enjoy "+hLabel(a.h)+".";
-var isFav=st.favs.indexOf(a.id)>-1;
+var a=c[idx],isFav=st.favs.indexOf(a.id)>-1;
 var card=document.createElement("div");card.className="card";
-card.innerHTML="<h3></h3><p class='meta'></p><p><strong>You’ll need:</strong> <span class='need'></span></p><p class='how'></p><div class='why'></div>";
-card.querySelector("h3").textContent=a.t;
-card.querySelector(".meta").textContent=a.min+" minutes · "+(a.out?"outside":"inside")+(isFav?" · a favourite":"");
-card.querySelector(".need").textContent=a.need;
-card.querySelector(".how").textContent=a.how;
-card.querySelector(".why").textContent="Why this: "+why;
-box.appendChild(card);
+var h3=document.createElement("h3");h3.textContent=a.t;card.appendChild(h3);
+var m=document.createElement("p");m.className="meta";m.textContent=a.min+" minutes · "+(a.out?"outside":"inside")+(isFav?" · a favourite":"");card.appendChild(m);
+var n=document.createElement("p");var nb=document.createElement("strong");nb.textContent="You’ll need: ";n.appendChild(nb);n.appendChild(document.createTextNode(a.need));card.appendChild(n);
+var how=document.createElement("p");how.textContent=a.how;card.appendChild(how);
+if(a.steps){var ol=document.createElement("ol");a.steps.forEach(function(s){var li=document.createElement("li");li.textContent=s;ol.appendChild(li);});card.appendChild(ol);}
+var why=document.createElement("div");why.className="why";
+why.textContent="Why this: It’s "+pLabel(p)+". "+(outdoorOK(w)?"It’s dry enough to go outside. ":"It’s too wet, cold or windy for outside, so this is indoors. ")+"They used to enjoy "+cLabel(a.h)+".";
+card.appendChild(why);box.appendChild(card);
 function mk(txt,cls,fn){var b=document.createElement("button");b.type="button";b.className="btn "+cls;b.textContent=txt;b.addEventListener("click",fn);box.appendChild(b);}
-mk("She enjoyed it","good",function(){addLog(a,"yes");});
+mk("They enjoyed it","good",function(){addLog(a,"yes");});
 mk("Not today","alt",function(){addLog(a,"no");});
 mk("Another idea","alt",function(){idx=(idx+1)%c.length;renderSuggest();});
-mk(isFav?"Remove from favourites":"Save as a favourite","alt",function(){toggleFav(a.id);});
-$("wx").textContent=w.text;}
+mk(isFav?"Remove from favourites":"Save as a favourite","alt",function(){toggleFav(a.id);});}
 function addLog(a,res){
 st.log.unshift({id:a.id,title:a.t,result:res,date:today(),time:new Date().toLocaleTimeString("en-IE",{hour:"2-digit",minute:"2-digit"})});
 if(res==="yes"&&st.favs.indexOf(a.id)<0)st.favs.push(a.id);
@@ -188,9 +218,9 @@ idx=0;save();renderAll();}
 function toggleFav(id){var i=st.favs.indexOf(id);if(i>-1)st.favs.splice(i,1);else st.favs.push(id);save();renderAll();}
 function renderFavs(){
 var ul=$("favs");ul.innerHTML="";
-if(!st.favs.length){ul.innerHTML='<li><span class="mut">None yet. Tap “She enjoyed it” and it appears here.</span></li>';return;}
+if(!st.favs.length){ul.innerHTML='<li><span class="mut">None yet. Tap “They enjoyed it” and it appears here.</span></li>';return;}
 st.favs.forEach(function(id){var a=byId(id);if(!a)return;
-var li=document.createElement("li");var s=document.createElement("span");s.textContent=a.t;li.appendChild(s);
+var li=document.createElement("li"),s=document.createElement("span");s.textContent=a.t;li.appendChild(s);
 var b=document.createElement("button");b.type="button";b.className="btn alt small";b.textContent="Remove";
 b.addEventListener("click",function(){toggleFav(id);});li.appendChild(b);ul.appendChild(li);});}
 function renderLog(){
@@ -208,7 +238,7 @@ $("date").textContent=n.toLocaleDateString("en-IE",{weekday:"long",day:"numeric"
 function fetchWx(){
 var url="https://api.open-meteo.com/v1/forecast?latitude=53.27&longitude=-9.05&current=temperature_2m,precipitation,weather_code,wind_speed_10m&timezone=Europe%2FDublin";
 fetch(url).then(function(r){return r.json();}).then(function(j){
-var c=j.current;var kind=weatherCode(c.weather_code);
+var c=j.current,kind=kindOf(c.weather_code);
 live={temp:Math.round(c.temperature_2m),wind:Math.round(c.wind_speed_10m),
 wet:c.precipitation>0.1||kind==="rain"||kind==="showers"||kind==="thunderstorm"||kind==="snow",
 storm:kind==="thunderstorm"||c.wind_speed_10m>=60,
